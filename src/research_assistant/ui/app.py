@@ -50,10 +50,12 @@ def main():
 
     # Check LLM availability
     llm = get_llm_service()
-    if not llm.is_available():
-        st.error("⚠️ Ollama is not running. Start it with: ollama serve")
-        return
-
+    ollama_available = llm.is_available()
+    
+    if not ollama_available:
+        st.warning("⚠️ AI service is initializing. This may take a few minutes on first deployment.")
+        st.info("💡 You can still explore the interface while AI models are being set up.")
+    
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -69,6 +71,10 @@ def main():
 
     # Chat input
     if prompt := st.chat_input("Ask a research question..."):
+        if not ollama_available:
+            st.error("🤖 AI service is still initializing. Please wait a moment and try again.")
+            return
+            
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
@@ -82,7 +88,7 @@ def main():
 
             if result.get("sources"):
                 with st.expander("Sources"):
-                    for src in result["sources"]:
+                    for src in result.get("sources"):
                         st.caption(f"📄 {src.get('source', 'Unknown')}")
 
         st.session_state.messages.append(
