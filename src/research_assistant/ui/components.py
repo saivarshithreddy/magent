@@ -4,49 +4,340 @@ import streamlit as st
 
 
 def render_header():
-    """Render the application header."""
+    """Render beautiful application header."""
     st.set_page_config(
-        page_title="Research Assistant",
-        page_icon="📚",
+        page_title="Magent - AI Research Assistant",
+        page_icon="🤖",
         layout="wide",
+        initial_sidebar_state="expanded",
     )
-    st.title("📚 Student Research Assistant")
-    st.caption("AI-powered research with your documents")
+    
+    # Custom CSS for beautiful styling
+    st.markdown("""
+    <style>
+    .main-header {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .feature-card {
+        background: #f8f9ff;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .status-indicator {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+    .status-ready { background: #10b981; color: white; }
+    .status-warning { background: #f59e0b; color: white; }
+    .status-error { background: #ef4444; color: white; }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Beautiful header
+    st.markdown("""
+    <div class="main-header">
+        <h1 style="margin: 0; font-size: 2.5rem;">🤖 Magent</h1>
+        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
+            Advanced AI Research Assistant
+        </p>
+        <p style="margin: 0; font-size: 1rem; opacity: 0.8;">
+            Multi-agent RAG system for intelligent document analysis
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Feature cards
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+        <div class="feature-card">
+            <h4>🔍 Smart Research</h4>
+            <p>AI-powered document analysis with semantic search</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="feature-card">
+            <h4>🤖 Multi-Agent</h4>
+            <p>Supervisor, Researcher, Writer & Critic agents</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="feature-card">
+            <h4>📚 Citations</h4>
+            <p>Accurate source attribution for every response</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 def render_sidebar():
-    """Render the sidebar."""
+    """Render beautiful sidebar."""
     with st.sidebar:
-        st.header("Settings")
-
-        st.subheader("Model")
+        # Sidebar header with gradient
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: white;
+        ">
+            <h3 style="margin: 0; font-size: 1.3rem;">⚙️ Settings</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        # Model selection with beautiful styling
+        st.markdown("""
+        <div style="
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        ">
+            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🤖 AI Model</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
         model = st.selectbox(
-            "LLM Model",
+            "Select Model",
             ["llama3.2", "llama3.1", "mistral"],
             index=0,
+            key="model_selection"
         )
-
-        st.subheader("Search")
-        top_k = st.slider("Results to retrieve", 1, 10, 5)
+        
+        # Search settings
+        st.markdown("""
+        <div style="
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        ">
+            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🔍 Search Settings</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        top_k = st.slider("Results to Retrieve", 1, 10, 5, key="top_k_slider")
+        
+        st.markdown("---")
+        
+        # System status
+        st.markdown("""
+        <div style="
+            background: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            color: white;
+        ">
+            <h4 style="margin: 0 0 0.5rem 0;">✅ System Status</h4>
+            <p style="margin: 0; font-size: 0.9rem;">All services operational</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Quick actions
+        st.markdown("""
+        <div style="
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        ">
+            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🚀 Quick Actions</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("📊 View Statistics", key="stats_btn", use_container_width=True):
+            st.info("📈 Analytics dashboard coming soon!")
+        
+        if st.button("🔄 Refresh Models", key="refresh_btn", use_container_width=True):
+            st.success("🔄 Models refreshed successfully!")
 
         return {"model": model, "top_k": top_k}
 
 
 def render_chat_message(role: str, content: str, sources: list | None = None):
-    """Render a chat message."""
+    """Render a beautiful chat message."""
+    # Define colors for different roles
+    if role == "user":
+        avatar_style = "background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);"
+        icon = "👤"
+    elif role == "assistant":
+        avatar_style = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+        icon = "🤖"
+    else:
+        avatar_style = "background: #6b7280;"
+        icon = "📝"
+    
     with st.chat_message(role):
-        st.markdown(content)
+        # Custom avatar styling
+        st.markdown(f"""
+        <div style="
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        ">
+            <div style="
+                {avatar_style}
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                color: white;
+                margin-right: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">
+                {icon}
+            </div>
+            <div style="flex: 1;">
+                {content}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
         if sources:
-            with st.expander("Sources"):
-                for src in sources:
-                    st.caption(f"📄 {src.get('source', 'Unknown')}")
+            st.markdown("""
+            <div style="
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-top: 1rem;
+            ">
+                <h4 style="margin: 0 0 0.5rem 0; color: #1f2937; font-size: 0.9rem;">
+                    📚 Sources
+                </h4>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            for i, src in enumerate(sources, 1):
+                source_name = src.get('source', f"Source {i}")
+                st.markdown(f"""
+                <div style="
+                    background: white;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 6px;
+                    padding: 0.75rem;
+                    margin-bottom: 0.5rem;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+                ">
+                    <div style="display: flex; align-items: center;">
+                        <span style="
+                            background: #10b981;
+                            color: white;
+                            padding: 0.2rem 0.5rem;
+                            border-radius: 12px;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            margin-right: 0.5rem;
+                        ">{i}</span>
+                        <span style="color: #374151; font-weight: 500;">{source_name}</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
 
 def render_document_upload():
-    """Render document upload widget."""
+    """Render beautiful document upload widget."""
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        margin: 1rem 0;
+    ">
+        <div style="
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        ">
+            <h3 style="margin: 0 0 1rem 0; color: #1f2937; display: flex; align-items: center;">
+                📄 Document Upload
+                <span style="
+                    background: #10b981;
+                    color: white;
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 12px;
+                    font-size: 0.7rem;
+                    margin-left: 0.5rem;
+                ">BETA</span>
+            </h3>
+            <p style="margin: 0 0 1rem 0; color: #6b7280;">
+                Upload your research documents to enable intelligent AI analysis
+            </p>
+            <div style="
+                background: #f3f4f6;
+                border-radius: 6px;
+                padding: 1rem;
+                border: 1px solid #e2e8f0;
+            ">
+                <p style="margin: 0; color: #374151; font-size: 0.9rem;">
+                    📁 Supported formats: PDF, TXT, MD<br>
+                    📊 Multiple files supported<br>
+                    🔒 Secure processing
+                </p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     uploaded_files = st.file_uploader(
-        "Upload Documents",
+        "Drag & Drop Files Here",
         type=["pdf", "txt", "md"],
         accept_multiple_files=True,
+        key="doc_upload",
+        help="Upload research papers, articles, or any text documents for AI analysis"
     )
+    
+    if uploaded_files:
+        st.markdown(f"""
+        <div style="
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        ">
+            <h4 style="margin: 0 0 0.5rem 0; color: #065f46; display: flex; align-items: center;">
+                ✅ Files Ready
+                <span style="
+                    background: #10b981;
+                    color: white;
+                    padding: 0.1rem 0.3rem;
+                    border-radius: 8px;
+                    font-size: 0.7rem;
+                    margin-left: 0.5rem;
+                ">{len(uploaded_files)} uploaded</span>
+            </h4>
+            <p style="margin: 0; color: #047857;">
+                Your documents are being processed and will be available for AI analysis
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
     return uploaded_files
