@@ -1,0 +1,46 @@
+# ============================================================================
+# RENDER BLUEPRINT CONFIGURATION
+# ============================================================================
+services:
+  # Main Web Service
+  - type: web
+    name: magent-app
+    env: docker
+    plan: standard
+    healthCheckPath: /_stcore/health
+    autoDeploy: true
+    dockerfilePath: infrastructure/render/Dockerfile.web
+    dockerContext: .
+    envVars:
+      - key: RESEARCH_OLLAMA_BASE_URL
+        value: https://magent-ollama.onrender.com
+      - key: RESEARCH_OLLAMA_MODEL
+        value: llama3.2
+      - key: RESEARCH_CHROMA_HOST
+        value: magent-chroma.onrender.com
+      - key: RESEARCH_CHROMA_PORT
+        value: 8000
+      - key: RESEARCH_LOG_LEVEL
+        value: INFO
+      - key: RESEARCH_ENVIRONMENT
+        value: render
+
+  # ChromaDB Vector Database (Private Service)
+  - type: pserv
+    name: magent-chroma
+    env: docker
+    plan: standard
+    healthCheckPath: /api/v1/heartbeat
+    autoDeploy: true
+    dockerfilePath: infrastructure/render/Dockerfile.chroma
+    dockerContext: .
+
+  # Ollama LLM Service (Private Service)
+  - type: pserv
+    name: magent-ollama
+    env: docker
+    plan: standard
+    healthCheckPath: /api/tags
+    autoDeploy: true
+    dockerfilePath: infrastructure/render/Dockerfile.ollama
+    dockerContext: .

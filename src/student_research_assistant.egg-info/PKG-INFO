@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: student-research-assistant
+Version: 1.0.0
+Summary: A multi-agent AI research assistant for students using LangGraph, LangChain, and vector databases
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Keywords: langchain,langgraph,multi-agent,research,rag,vector-database,ollama,chromadb
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: langchain>=0.3.0
+Requires-Dist: langchain-community>=0.3.0
+Requires-Dist: langchain-core>=0.3.0
+Requires-Dist: langchain-text-splitters>=0.3.0
+Requires-Dist: langgraph>=0.2.0
+Requires-Dist: langchain-ollama>=0.2.0
+Requires-Dist: ollama>=0.3.0
+Requires-Dist: chromadb>=0.4.0
+Requires-Dist: sentence-transformers>=2.2.0
+Requires-Dist: pypdf>=4.0.0
+Requires-Dist: python-docx>=1.0.0
+Requires-Dist: unstructured>=0.10.0
+Requires-Dist: streamlit>=1.28.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pyyaml>=6.0.0
+Requires-Dist: aiofiles>=23.0.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: tenacity>=8.0.0
+Requires-Dist: structlog>=23.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.12.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.5.0; extra == "dev"
+Requires-Dist: black>=24.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.7.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: pre-commit>=3.6.0; extra == "dev"
+Requires-Dist: mkdocs>=1.5.0; extra == "dev"
+Requires-Dist: mkdocs-material>=9.5.0; extra == "dev"
+Requires-Dist: mkdocstrings[python]>=0.24.0; extra == "dev"
+Provides-Extra: prod
+Requires-Dist: gunicorn>=21.0.0; extra == "prod"
+Requires-Dist: prometheus-client>=0.19.0; extra == "prod"
+Provides-Extra: all
+Requires-Dist: student-research-assistant[dev,prod]; extra == "all"
+
+# Magent – Student Research Assistant
+
+Multi-agent RAG assistant built with LangChain, LangGraph, Streamlit, ChromaDB, and Ollama. Students can upload documents, ask research questions, and get cited answers from a supervisor/researcher/writer/critic agent team.
+
+## Quick start
+- Install deps: `python3 -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"` (Ollama + models required: `ollama pull llama3.2`).
+- Seed sample docs: `python scripts/seed_data.py` then ingest with `python -m research_assistant.cli ingest --dir data/documents`.
+- Ask via CLI: `python -m research_assistant.cli query "What is machine learning?" --show-sources`.
+- Run UI: `streamlit run src/research_assistant/ui/app.py`.
+- Tests/quality: `pytest tests/ -v` and optional `pre-commit run --all-files`.
+
+## Branches
+- `main` – Stable
+- `gk_poc` – GK POC
+- `sv_poc` – SV POC (current)
+- `dev` – Shared development

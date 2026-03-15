@@ -1,0 +1,4 @@
+[console_scripts]
+ra-ingest = research_assistant.cli:ingest
+ra-query = research_assistant.cli:query
+research-assistant = research_assistant.cli:main

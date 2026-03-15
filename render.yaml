@@ -1,0 +1,59 @@
+# ============================================================================
+# RENDER DEPLOYMENT CONFIGURATION
+# ============================================================================
+services:
+  # Main Web Service
+  - type: web
+    name: magent-app
+    env: docker
+    repo: https://github.com/YOUR_USERNAME/magent.git
+    rootDir: .
+    dockerfilePath: infrastructure/render/Dockerfile.web
+    dockerContext: .
+    plan: standard
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: RESEARCH_OLLAMA_BASE_URL
+        value: https://magent-ollama.onrender.com
+      - key: RESEARCH_OLLAMA_MODEL
+        value: llama3.2
+      - key: RESEARCH_CHROMA_HOST
+        value: magent-chroma.onrender.com
+      - key: RESEARCH_CHROMA_PORT
+        value: 8000
+      - key: RESEARCH_LOG_LEVEL
+        value: INFO
+      - key: RESEARCH_ENVIRONMENT
+        value: render
+
+  # ChromaDB Vector Database (Private Service)
+  - type: pserv
+    name: magent-chroma
+    env: docker
+    repo: https://github.com/YOUR_USERNAME/magent.git
+    rootDir: .
+    dockerfilePath: infrastructure/render/Dockerfile.chroma
+    dockerContext: .
+    plan: standard
+    envVars:
+      - key: IS_PERSISTENT
+        value: TRUE
+      - key: PERSIST_DIRECTORY
+        value: /chroma/chroma
+      - key: ANONYMIZED_TELEMETRY
+        value: FALSE
+
+  # Ollama LLM Service (Private Service)
+  - type: pserv
+    name: magent-ollama
+    env: docker
+    repo: https://github.com/YOUR_USERNAME/magent.git
+    rootDir: .
+    dockerfilePath: infrastructure/render/Dockerfile.ollama
+    dockerContext: .
+    plan: standard
+    envVars:
+      - key: OLLAMA_HOST
+        value: 0.0.0.0
+      - key: OLLAMA_ORIGINS
+        value: https://magent-app.onrender.com

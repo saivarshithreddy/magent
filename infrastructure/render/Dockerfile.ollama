@@ -1,0 +1,35 @@
+# ============================================================================
+# RENDER OLLAMA SERVICE DOCKERFILE - LLM Service
+# ============================================================================
+FROM ollama/ollama:latest
+
+# Environment variables
+ENV OLLAMA_HOST=0.0.0.0 \
+    OLLAMA_ORIGINS=*
+
+# Expose port
+EXPOSE 11434
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=5 \
+    CMD curl -f http://localhost:11434/api/tags || exit 1
+
+# Model initialization script
+COPY <<EOF /docker-entrypoint-initdb.d/01-init-models.sh
+#!/bin/sh
+echo "Waiting for Ollama to start..."
+sleep 10
+
+echo "Pulling llama3.2 model..."
+ollama pull llama3.2
+
+echo "Pulling nomic-embed-text model..."
+ollama pull nomic-embed-text
+
+echo "Models ready!"
+EOF
+
+RUN chmod +x /docker-entrypoint-initdb.d/01-init-models.sh
+
+# Default command
+CMD ["ollama", "serve"]

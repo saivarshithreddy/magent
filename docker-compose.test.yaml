@@ -1,0 +1,53 @@
+# ============================================================================
+# LOCAL TEST COMPOSE - Simulate Render Environment
+# ============================================================================
+version: "3.9"
+
+services:
+  # Main Application
+  magent-web:
+    image: magent-web:test
+    container_name: test-magent-web
+    ports:
+      - "8501:8501"
+    environment:
+      - RESEARCH_OLLAMA_BASE_URL=http://magent-ollama:11434
+      - RESEARCH_OLLAMA_MODEL=llama3.2
+      - RESEARCH_CHROMA_HOST=magent-chroma
+      - RESEARCH_CHROMA_PORT=8000
+      - RESEARCH_LOG_LEVEL=INFO
+      - RESEARCH_ENVIRONMENT=render
+    depends_on:
+      - magent-chroma
+      - magent-ollama
+    networks:
+      - test-network
+
+  # ChromaDB
+  magent-chroma:
+    image: magent-chroma:test
+    container_name: test-magent-chroma
+    ports:
+      - "8000:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE
+    networks:
+      - test-network
+
+  # Ollama
+  magent-ollama:
+    image: magent-ollama:test
+    container_name: test-magent-ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_ORIGINS=*
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge

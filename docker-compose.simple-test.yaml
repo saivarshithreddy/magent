@@ -1,0 +1,24 @@
+# ============================================================================
+# SIMPLIFIED TEST - Using External Services (Like Render)
+# ============================================================================
+services:
+  # Main Application Only
+  magent-web:
+    image: magent-web:test
+    container_name: test-magent-web-simple
+    ports:
+      - "8501:8501"
+    environment:
+      # Use external services (simulating Render URLs)
+      - RESEARCH_OLLAMA_BASE_URL=http://localhost:11434
+      - RESEARCH_OLLAMA_MODEL=llama3.2
+      - RESEARCH_CHROMA_HOST=localhost
+      - RESEARCH_CHROMA_PORT=8000
+      - RESEARCH_LOG_LEVEL=INFO
+      - RESEARCH_ENVIRONMENT=render
+    networks:
+      - host
+
+networks:
+  host:
+    external: true
