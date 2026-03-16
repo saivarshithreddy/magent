@@ -21,7 +21,7 @@ class _HealthHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
 
-def start_health_server(port: int = 8500):
+def start_health_server(port: int = 8501):
     """Start a lightweight health server on a separate thread."""
     global _health_server_started
     if _health_server_started:
@@ -45,29 +45,27 @@ def main():
     render_header()
     settings = render_sidebar()
 
-    # Start lightweight health endpoint for probes
-    start_health_server()
-
     # Check LLM availability
     llm = get_llm_service()
     ollama_available = llm.is_available()
     
-    # Beautiful status indicator
+    # Beautiful status indicator with dark theme
     if ollama_available:
         st.markdown("""
         <div style="
-            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
             color: white;
             padding: 1rem 1.5rem;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 2rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
         ">
-            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center;">
+            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center; font-weight: 700;">
                 <span>🤖 AI System Online</span>
                 <span style="
-                    background: rgba(255,255,255,0.2);
+                    background: rgba(255,255,255,0.15);
                     padding: 0.2rem 0.5rem;
                     border-radius: 20px;
                     font-size: 0.8rem;
@@ -79,18 +77,19 @@ def main():
     else:
         st.markdown("""
         <div style="
-            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+            background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
             color: white;
             padding: 1rem 1.5rem;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 2rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
         ">
-            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center;">
+            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center; font-weight: 700;">
                 <span>⚠️ AI System Initializing</span>
                 <span style="
-                    background: rgba(255,255,255,0.2);
+                    background: rgba(255,255,255,0.15);
                     padding: 0.2rem 0.5rem;
                     border-radius: 20px;
                     font-size: 0.8rem;

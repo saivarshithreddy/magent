@@ -15,23 +15,49 @@ def render_header():
     # Custom CSS for beautiful styling
     st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    body, .stApp {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #0f172a !important;
+    }
+    
     .main-header {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
         padding: 2rem;
-        border-radius: 10px;
+        border-radius: 12px;
         margin-bottom: 2rem;
         text-align: center;
         color: white;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        border: 1px solid rgba(255,255,255,0.1);
     }
+    
     .feature-card {
-        background: #f8f9ff;
+        background: #ffffff;
         padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
+        border-radius: 12px;
+        border-left: 4px solid #1e293b;
         margin: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+        font-weight: 500;
+        color: #0f172a;
     }
+    
+    .feature-card h4 {
+        color: #1e293b !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .feature-card p {
+        color: #475569 !important;
+        font-weight: 400 !important;
+        margin: 0 !important;
+    }
+    
     .status-indicator {
         display: inline-block;
         padding: 0.25rem 0.75rem;
@@ -39,10 +65,30 @@ def render_header():
         font-size: 0.875rem;
         font-weight: 600;
         margin-left: 0.5rem;
+        font-family: 'Inter', sans-serif;
     }
-    .status-ready { background: #10b981; color: white; }
-    .status-warning { background: #f59e0b; color: white; }
-    .status-error { background: #ef4444; color: white; }
+    .status-ready { background: #0f172a; color: white; }
+    .status-warning { background: #1e293b; color: white; }
+    .status-error { background: #0f172a; color: white; }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+    }
+    
+    .stTextInput > div > div > input {
+        font-family: 'Inter', sans-serif !important;
+        color: #0f172a !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    
+    .stSelectbox > div > div > select {
+        font-family: 'Inter', sans-serif !important;
+        color: #0f172a !important;
+        background: #ffffff !important;
+    }
     </style>
     """, unsafe_allow_html=True)
     
@@ -89,31 +135,35 @@ def render_header():
 def render_sidebar():
     """Render beautiful sidebar."""
     with st.sidebar:
-        # Sidebar header with gradient
+        # Sidebar header with dark theme
         st.markdown("""
         <div style="
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 2rem;
             text-align: center;
             color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         ">
-            <h3 style="margin: 0; font-size: 1.3rem;">⚙️ Settings</h3>
+            <h3 style="margin: 0; font-size: 1.3rem; font-weight: 700;">⚙️ Settings</h3>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("---")
         
-        # Model selection with beautiful styling
+        # Model selection with dark theme styling
         st.markdown("""
         <div style="
-            background: #f1f5f9;
+            background: #ffffff;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         ">
-            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🤖 AI Model</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #0f172a; font-weight: 700;">🤖 AI Model</h4>
         </div>
         """, unsafe_allow_html=True)
         
@@ -124,15 +174,17 @@ def render_sidebar():
             key="model_selection"
         )
         
-        # Search settings
+        # Search settings with dark theme
         st.markdown("""
         <div style="
-            background: #f1f5f9;
+            background: #ffffff;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         ">
-            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🔍 Search Settings</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #0f172a; font-weight: 700;">🔍 Search Settings</h4>
         </div>
         """, unsafe_allow_html=True)
         
@@ -140,29 +192,33 @@ def render_sidebar():
         
         st.markdown("---")
         
-        # System status
+        # System status with dark theme
         st.markdown("""
         <div style="
-            background: #10b981;
+            background: #0f172a;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1rem;
             color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         ">
-            <h4 style="margin: 0 0 0.5rem 0;">✅ System Status</h4>
-            <p style="margin: 0; font-size: 0.9rem;">All services operational</p>
+            <h4 style="margin: 0 0 0.5rem 0; font-weight: 700;">✅ System Status</h4>
+            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">All services operational</p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Quick actions
+        # Quick actions with dark theme
         st.markdown("""
         <div style="
-            background: #f3f4f6;
+            background: #ffffff;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         ">
-            <h4 style="margin: 0 0 0.5rem 0; color: #1f2937;">🚀 Quick Actions</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #0f172a; font-weight: 700;">🚀 Quick Actions</h4>
         </div>
         """, unsafe_allow_html=True)
         
