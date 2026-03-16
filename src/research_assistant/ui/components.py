@@ -4,135 +4,115 @@ import streamlit as st
 
 
 def render_header():
-    """Render beautiful application header."""
+    """Render lightweight application header for free tier."""
     st.set_page_config(
         page_title="Magent - AI Research Assistant",
         page_icon="🤖",
-        layout="wide",
-        initial_sidebar_state="expanded",
+        layout="centered",  # Changed from wide to save memory
+        initial_sidebar_state="auto",  # Changed to auto for faster load
     )
     
-    # Simple CSS
+    # Minimal CSS for free tier performance
     st.markdown("""
     <style>
     .main-header {
-        background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
+        background: #1e293b;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
         text-align: center;
         color: white;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     }
     .feature-card {
         background: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border-left: 4px solid #1e293b;
-        margin: 1rem 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        border: 1px solid #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid #1e293b;
+        margin: 0.5rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # Header
+    # Lightweight header
     st.markdown("""
     <div class="main-header">
-        <h1 style="margin: 0; font-size: 2.5rem;">🤖 Magent</h1>
-        <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; opacity: 0.9;">
-            Advanced AI Research Assistant
-        </p>
-        <p style="margin: 0; font-size: 1rem; opacity: 0.8;">
-            Multi-agent RAG system for intelligent document analysis
+        <h1 style="margin: 0; font-size: 2rem;">🤖 Magent</h1>
+        <p style="margin: 0.5rem 0 0 0; font-size: 1rem;">
+            AI Research Assistant - Free Tier
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature cards
+    # Simplified feature cards
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
         <div class="feature-card">
-            <h4>🔍 Smart Research</h4>
-            <p>AI-powered document analysis with semantic search</p>
+            <h4>🔍 Research</h4>
+            <p>Document analysis</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
         <div class="feature-card">
-            <h4>🤖 Multi-Agent</h4>
-            <p>Supervisor, Researcher, Writer & Critic agents</p>
+            <h4>🤖 AI Agents</h4>
+            <p>Multi-agent system</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("""
         <div class="feature-card">
-            <h4>📚 Citations</h4>
-            <p>Accurate source attribution for every response</p>
+            <h4>📚 Sources</h4>
+            <p>Cited responses</p>
         </div>
         """, unsafe_allow_html=True)
 
 
 def render_sidebar():
-    """Render beautiful sidebar."""
+    """Render lightweight sidebar for free tier."""
     with st.sidebar:
-        # Header
+        # Simple header
         st.markdown("""
         <div style="
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
             text-align: center;
             color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         ">
-            <h3 style="margin: 0; font-size: 1.3rem; font-weight: 700;">⚙️ Settings</h3>
+            <h3 style="margin: 0; font-size: 1.1rem;">⚙️ Settings</h3>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("---")
-        
-        # Model selection
-        st.markdown("### 🤖 AI Model")
+        # Simple model selection
+        st.markdown("### 🤖 Model")
         model = st.selectbox(
-            "Select Model",
+            "Choose Model",
             ["llama3.2", "llama3.1", "mistral"],
             index=0,
             key="model_selection"
         )
         
-        # Search settings
-        st.markdown("### 🔍 Search Settings")
-        top_k = st.slider("Results to Retrieve", 1, 10, 5, key="top_k_slider")
+        # Simple search settings
+        st.markdown("### 🔍 Search")
+        top_k = st.slider("Results", 1, 10, 5, key="top_k_slider")
         
-        st.markdown("---")
-        
-        # System status
+        # Status
+        st.markdown("### 📊 Status")
         st.markdown("""
         <div style="
-            background: #1e293b;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: #f0f9ff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border-left: 3px solid #1e293b;
         ">
-            <h4 style="margin: 0 0 0.5rem 0; font-weight: 700;">✅ System Status</h4>
-            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">All services operational</p>
+            <p style="margin: 0; font-size: 0.9rem;">✅ Free Tier Active</p>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Quick actions
-        st.markdown("### 🚀 Quick Actions")
-        if st.button("📊 View Statistics", key="stats_btn", use_container_width=True):
-            st.info("📈 Analytics dashboard coming soon!")
-        
-        if st.button("🔄 Refresh Models", key="refresh_btn", use_container_width=True):
-            st.success("🔄 Models refreshed successfully!")
 
         return {"model": model, "top_k": top_k}
 
@@ -148,19 +128,19 @@ def render_chat_message(role: str, content: str, sources: list | None = None):
 
 
 def render_document_upload():
-    """Render beautiful document upload widget."""
-    st.markdown("### 📄 Document Upload")
+    """Render lightweight document upload for free tier."""
+    st.markdown("### 📄 Upload Documents")
     
     uploaded_files = st.file_uploader(
-        "Drag & Drop Files Here",
+        "Choose files",
         type=["pdf", "txt", "md"],
         accept_multiple_files=True,
         key="doc_upload",
-        help="Upload research papers, articles, or any text documents for AI analysis"
+        help="Upload research papers for AI analysis"
     )
     
     if uploaded_files:
-        st.success(f"✅ {len(uploaded_files)} files uploaded successfully!")
-        st.info("Your documents are being processed and will be available for AI analysis")
+        st.success(f"✅ {len(uploaded_files)} files ready")
+        st.info("Processing on free tier - may take longer")
     
     return uploaded_files
