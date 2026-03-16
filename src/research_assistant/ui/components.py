@@ -12,37 +12,47 @@ def render_header():
         initial_sidebar_state="expanded",
     )
     
-    # Custom CSS for beautiful styling
+    # Custom CSS for beautiful dark theme styling
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
-    body, .stApp {
+    body, .stApp, .main {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         color: #0f172a !important;
+        background: #ffffff !important;
+    }
+    
+    .stApp {
+        background: #ffffff !important;
+    }
+    
+    .main .block-container {
+        padding-top: 2rem !important;
     }
     
     .main-header {
-        background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        text-align: center;
-        color: white;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: linear-gradient(90deg, #1e293b 0%, #334155 100%) !important;
+        padding: 2rem !important;
+        border-radius: 12px !important;
+        margin-bottom: 2rem !important;
+        text-align: center !important;
+        color: white !important;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
     }
     
     .feature-card {
-        background: #ffffff;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border-left: 4px solid #1e293b;
-        margin: 1rem 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        border: 1px solid #e2e8f0;
-        font-weight: 500;
-        color: #0f172a;
+        background: #ffffff !important;
+        padding: 1.5rem !important;
+        border-radius: 12px !important;
+        border-left: 4px solid #1e293b !important;
+        margin: 1rem 0 !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08) !important;
+        border: 1px solid #e2e8f0 !important;
+        font-weight: 500 !important;
+        color: #0f172a !important;
+        min-height: 120px !important;
     }
     
     .feature-card h4 {
@@ -67,9 +77,9 @@ def render_header():
         margin-left: 0.5rem;
         font-family: 'Inter', sans-serif;
     }
-    .status-ready { background: #0f172a; color: white; }
-    .status-warning { background: #1e293b; color: white; }
-    .status-error { background: #0f172a; color: white; }
+    .status-ready { background: #0f172a !important; color: white !important; }
+    .status-warning { background: #1e293b !important; color: white !important; }
+    .status-error { background: #0f172a !important; color: white !important; }
     
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Inter', sans-serif !important;
@@ -89,6 +99,17 @@ def render_header():
         color: #0f172a !important;
         background: #ffffff !important;
     }
+    
+    .stSlider > div > div > div > div {
+        background: #1e293b !important;
+    }
+    
+    .stButton > button {
+        background: #1e293b !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 600 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
     
@@ -105,7 +126,7 @@ def render_header():
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature cards
+    # Feature cards with improved dark theme
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
