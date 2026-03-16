@@ -1,40 +1,8 @@
-"""Main Streamlit application."""
+"""Streamlit application for Magent AI Research Assistant."""
 
 import streamlit as st
 import threading
-from http.server import BaseHTTPRequestHandler, HTTPServer
-
-_health_server_started = False
-
-
-class _HealthHandler(BaseHTTPRequestHandler):
-    """Simple /healthz endpoint for k8s probes."""
-
-    def do_GET(self):
-        if self.path == "/healthz":
-            self.send_response(200)
-            self.send_header("Content-type", "text/plain")
-            self.end_headers()
-            self.wfile.write(b"ok")
-        else:
-            self.send_response(404)
-            self.end_headers()
-
-
-def start_health_server(port: int = 8501):
-    """Start a lightweight health server on a separate thread."""
-    global _health_server_started
-    if _health_server_started:
-        return
-
-    def _serve():
-        server = HTTPServer(("0.0.0.0", port), _HealthHandler)
-        server.serve_forever()
-
-    thread = threading.Thread(target=_serve, daemon=True)
-    thread.start()
-    _health_server_started = True
-
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from research_assistant.ui.components import render_header, render_sidebar, render_document_upload
 from research_assistant.graph import run_research
 from research_assistant.services import get_llm_service
@@ -49,32 +17,8 @@ def main():
     llm = get_llm_service()
     ollama_available = llm.is_available()
     
-    # Beautiful status indicator with dark theme
+    # Status indicator
     if ollama_available:
-        st.markdown("""
-        <div style="
-            background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-        ">
-            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center; font-weight: 700;">
-                <span>🤖 AI System Online</span>
-                <span style="
-                    background: rgba(255,255,255,0.15);
-                    padding: 0.2rem 0.5rem;
-                    border-radius: 20px;
-                    font-size: 0.8rem;
-                    margin-left: 1rem;
-                ">Ready for Research</span>
-            </h3>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
         st.markdown("""
         <div style="
             background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
@@ -84,17 +28,25 @@ def main():
             margin-bottom: 2rem;
             text-align: center;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
         ">
-            <h3 style="margin: 0; display: flex; align-items: center; justify-content: center; font-weight: 700;">
-                <span>⚠️ AI System Initializing</span>
-                <span style="
-                    background: rgba(255,255,255,0.15);
-                    padding: 0.2rem 0.5rem;
-                    border-radius: 20px;
-                    font-size: 0.8rem;
-                    margin-left: 1rem;
-                ">Models Downloading</span>
+            <h3 style="margin: 0; font-weight: 700;">
+                🤖 AI System Online - Ready for Research
+            </h3>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div style="
+            background: linear-gradient(90deg, #334155 0%, #475569 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        ">
+            <h3 style="margin: 0; font-weight: 700;">
+                ⚠️ AI System Initializing - Models Downloading
             </h3>
         </div>
         """, unsafe_allow_html=True)
@@ -130,14 +82,14 @@ def main():
     <div style="
         background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
         padding: 1.5rem;
-        border-radius: 10px;
+        border-radius: 12px;
         margin-bottom: 1rem;
-        border-left: 4px solid #6366f1;
+        border-left: 4px solid #1e293b;
     ">
-        <h3 style="margin: 0; color: #1f2937; display: flex; align-items: center;">
+        <h3 style="margin: 0; color: #1e293b; font-weight: 700;">
             💬 Research Chat
             <span style="
-                background: #6366f1;
+                background: #1e293b;
                 color: white;
                 padding: 0.2rem 0.5rem;
                 border-radius: 15px;
@@ -153,10 +105,15 @@ def main():
 
     # Display chat history
     for msg in st.session_state.messages:
-        render_chat_message(msg["role"], msg["content"], msg.get("sources"))
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+            if msg.get("sources"):
+                st.markdown("📚 **Sources:**")
+                for src in msg["sources"]:
+                    st.markdown(f"• {src}")
 
-    # Beautiful chat input
-    if prompt := st.chat_input("🔍 Ask anything about your documents...", key="chat_input"):
+    # Chat input
+    if prompt := st.chat_input("🔍 Ask anything about your documents..."):
         if not ollama_available:
             st.markdown("""
             <div style="
@@ -176,74 +133,19 @@ def main():
             return
             
         st.session_state.messages.append({"role": "user", "content": prompt})
-        render_chat_message("user", prompt)
+        with st.chat_message("user"):
+            st.markdown(prompt)
 
         # Generate response
-        render_chat_message("assistant", "", None)  # Start assistant message
-        
-        with st.spinner("🤖 AI Agents Working..."):
-            # Show agent status
-            status_container = st.container()
-            with status_container:
-                st.markdown("""
-                <div style="
-                    background: #f0f9ff;
-                    border: 1px solid #3b82f6;
-                    border-radius: 8px;
-                    padding: 1rem;
-                    margin-bottom: 1rem;
-                ">
-                    <h5 style="margin: 0; color: #1e40af;">🔄 Multi-Agent Workflow Active</h5>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
-                        <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 6px;">
-                            <div style="font-size: 1.5rem;">👨‍💼</div>
-                            <div style="font-size: 0.8rem; color: #374151;">Supervisor</div>
-                        </div>
-                        <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 6px;">
-                            <div style="font-size: 1.5rem;">🔍</div>
-                            <div style="font-size: 0.8rem; color: #374151;">Researcher</div>
-                        </div>
-                        <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 6px;">
-                            <div style="font-size: 1.5rem;">✍️</div>
-                            <div style="font-size: 0.8rem; color: #374151;">Writer</div>
-                        </div>
-                        <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 6px;">
-                            <div style="font-size: 1.5rem;">🔬</div>
-                            <div style="font-size: 0.8rem; color: #374151;">Critic</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
+        with st.chat_message("assistant"):
+            with st.spinner("🤖 AI Agents Working..."):
                 result = run_research(prompt)
-                
-                # Clear status and show result
-                status_container.empty()
-                
                 st.markdown(result["response"])
 
                 if result.get("sources"):
-                    st.markdown("""
-                    <div style="
-                        background: #f0fdf4;
-                        border: 1px solid #10b981;
-                        border-radius: 8px;
-                        padding: 1rem;
-                        margin-top: 1rem;
-                    ">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #065f46; display: flex; align-items: center;">
-                            📚 Research Sources
-                            <span style="
-                                background: #10b981;
-                                color: white;
-                                padding: 0.2rem 0.5rem;
-                                border-radius: 12px;
-                                font-size: 0.75rem;
-                                margin-left: 1rem;
-                            ">{len(result.get('sources', []))} sources found</span>
-                        </h4>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown("📚 **Research Sources:**")
+                    for src in result.get("sources"):
+                        st.markdown(f"• {src.get('source', 'Unknown')}")
 
         st.session_state.messages.append(
             {
